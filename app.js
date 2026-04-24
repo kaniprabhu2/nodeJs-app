@@ -4,10 +4,21 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve existing images folder
+/**
+ * Static files (IMPORTANT: keep this before routes)
+ */
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Home Page
+/**
+ * Health Check (for Docker / Kubernetes / Minikube)
+ */
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
+/**
+ * Home Page
+ */
 app.get("/", (req, res) => {
     res.send(`
     <!DOCTYPE html>
@@ -89,7 +100,9 @@ app.get("/", (req, res) => {
     `);
 });
 
-// About Page
+/**
+ * About Page
+ */
 app.get("/about", (req, res) => {
     res.send(`
     <h1>About Kani Technologies</h1>
@@ -98,7 +111,9 @@ app.get("/about", (req, res) => {
     `);
 });
 
-// Contact Page
+/**
+ * Contact Page
+ */
 app.get("/contact", (req, res) => {
     res.send(`
     <h1>Contact Us</h1>
@@ -108,7 +123,9 @@ app.get("/contact", (req, res) => {
     `);
 });
 
-// API Route
+/**
+ * API Route
+ */
 app.get("/api/info", (req, res) => {
     res.json({
         company: "Kani Technologies",
@@ -118,8 +135,9 @@ app.get("/api/info", (req, res) => {
     });
 });
 
-// Start Server
+/**
+ * Start Server
+ */
 app.listen(PORT, () => {
     console.log(`Kani Technologies website running at http://localhost:${PORT}`);
 });
-

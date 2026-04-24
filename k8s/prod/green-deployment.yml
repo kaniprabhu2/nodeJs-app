@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-green
+  labels:
+    app: nodejs
+    version: green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+      version: green
+  template:
+    metadata:
+      labels:
+        app: nodejs
+        version: green
+    spec:
+      containers:
+        - name: nodejs
+          image: kaniprabhu02/nodejs-app:v2
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PORT
+              value: "5000"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000

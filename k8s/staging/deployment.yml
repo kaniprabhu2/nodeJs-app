@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-staging
+  labels:
+    app: nodejs
+    env: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+      env: staging
+  template:
+    metadata:
+      labels:
+        app: nodejs
+        env: staging
+    spec:
+      containers:
+        - name: nodejs
+          image: kaniprabhu02/nodejs-app:v1
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PORT
+              value: "5000"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
